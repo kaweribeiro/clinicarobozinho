@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de uso — Robô da Clínica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F5F7;
+    --surface:#FFFFFF;
+    --ink:#1D1D1F;
+    --ink-soft:#6E6E73;
+    --line:#DEDEE3;
+    --accent:#4338CA;
+    --accent-soft:#EEEEFC;
+    --wa-soft:#E9FBF0;
+    --warn-ink:#92400E;
+    --warn-bg:#FFF7ED;
+    --warn-line:#FDE1B8;
+    --good-ink:#166534;
+    --good-bg:#F0FDF4;
+    --good-line:#BBF0CC;
+    --code-bg:#F1F1F5;
+    --radius-lg:20px;
+    --radius-md:14px;
+    --radius-sm:9px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.55;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .wrap{max-width:840px;margin:0 auto;padding:0 20px 80px;}
+
+  .hero{padding:56px 20px 40px;max-width:840px;margin:0 auto;}
+  .eyebrow{
+    display:inline-block;font-family:'JetBrains Mono',monospace;
+    font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--accent);
+    background:var(--accent-soft);padding:5px 10px;border-radius:7px;margin-bottom:18px;
+  }
+  h1{font-size:32px;line-height:1.15;font-weight:800;letter-spacing:-0.02em;margin:0 0 12px;}
+  .lede{font-size:17px;color:var(--ink-soft);max-width:56ch;margin:0 0 28px;}
+  .meta-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px 20px;display:grid;gap:10px;}
+  .meta-row{display:flex;justify-content:space-between;gap:16px;font-size:13.5px;}
+  .meta-row .k{font-family:'JetBrains Mono',monospace;color:var(--ink-soft);}
+  .meta-row .v{font-weight:600;text-align:right;}
+
+  section{padding:44px 0 4px;}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.05em;margin-bottom:8px;}
+  h2{font-size:24px;font-weight:800;letter-spacing:-0.01em;margin:0 0 14px;}
+  p.intro{color:var(--ink-soft);font-size:15.5px;max-width:64ch;margin:0 0 22px;}
+  strong{color:var(--ink);}
+  hr.div{border:none;border-top:1px solid var(--line);margin:44px 0 0;}
+
+  .callout{border-radius:var(--radius-md);padding:16px 18px;font-size:14.5px;margin-bottom:14px;}
+  .callout.good{background:var(--good-bg);border:1px solid var(--good-line);color:var(--good-ink);}
+  .callout.warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);}
+  .callout h4{margin:0 0 6px;font-size:14px;}
+  .callout p{margin:0;color:inherit;opacity:.92;}
+  .callout ul{margin:6px 0 0;padding-left:18px;}
+  .callout li{margin-bottom:5px;}
+
+  .filemap{display:grid;gap:10px;}
+  .file-row{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:12px 16px;display:grid;grid-template-columns:180px 1fr;gap:14px;align-items:center;
+  }
+  @media (max-width:600px){.file-row{grid-template-columns:1fr;}}
+  .file-row .path{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--accent);font-weight:600;}
+  .file-row .desc{font-size:13.8px;color:var(--ink-soft);}
+
+  .timeline{position:relative;margin-top:8px;}
+  .timeline::before{content:'';position:absolute;left:27px;top:6px;bottom:6px;width:2px;background:var(--line);}
+  .step{position:relative;padding-left:64px;margin-bottom:16px;}
+  .step-marker{
+    position:absolute;left:0;top:0;width:56px;height:56px;border-radius:14px;
+    background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;
+    justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;
+    color:var(--accent);z-index:1;
+  }
+  .step-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:18px 20px;}
+  .step-card h3{margin:0 0 6px;font-size:16px;}
+  .step-card .sub{font-size:13px;color:var(--ink-soft);margin:0 0 12px;}
+  .step-card p{font-size:14.3px;margin:0 0 8px;}
+  .step-card ul{margin:0 0 8px;padding-left:18px;font-size:14px;}
+  .step-card ul li{margin-bottom:6px;}
+  pre{
+    background:var(--code-bg);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:13px 15px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:12.3px;
+    line-height:1.6;margin:10px 0 0;
+  }
+  code{font-family:'JetBrains Mono',monospace;}
+
+  .checklist{list-style:none;padding:0;margin:0;}
+  .checklist li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;padding:9px 0;border-bottom:1px solid var(--line);}
+  .checklist li:last-child{border-bottom:none;}
+  .checklist li::before{content:'';flex:0 0 16px;height:16px;margin-top:3px;border:1.5px solid var(--ink-soft);border-radius:5px;}
+
+  .closing{background:var(--ink);color:#fff;border-radius:var(--radius-lg);padding:26px 24px;margin-top:36px;}
+  .closing h3{margin:0 0 8px;font-size:17px;}
+  .closing p{margin:0;color:#C7C7CC;font-size:14.5px;}
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <span class="eyebrow">GUIA DE USO · PRIMEIRO PROJETO</span>
+    <h1>Como colocar o robô no ar</h1>
+    <p class="lede">Passo a passo pra rodar o que está no zip — do zero até o cliente testando de verdade.</p>
+    <div class="meta-card">
+      <div class="meta-row"><span class="k">projeto</span><span class="v">Robô de atendimento (clínica de estética)</span></div>
+      <div class="meta-row"><span class="k">equipe</span><span class="v">Kawe + Wanderson</span></div>
+      <div class="meta-row"><span class="k">versão</span><span class="v">v2 — dados editáveis sem redeploy</span></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <!-- NOVIDADES -->
+    <section id="novidades">
+      <div class="section-label">01 · O QUE MUDOU NESSA VERSÃO</div>
+      <h2>Mais caprichado que o rascunho inicial</h2>
+      <div class="callout good">
+        <h4>A melhoria principal: dados editáveis sem mexer em código</h4>
+        <p>Antes, pra trocar um preço ou horário, alguém tinha que editar código e fazer deploy de novo. Agora os dados da clínica moram num bancozinho (SQLite) que dá pra editar numa telinha visual — sem tocar em código, sem redeploy.</p>
+      </div>
+      <div class="callout good">
+        <h4>Outros reforços</h4>
+        <ul>
+          <li><b>Validação (Zod):</b> se chegar uma mensagem em formato estranho, o sistema ignora em vez de quebrar.</li>
+          <li><b>Proteção contra duplicidade:</b> WhatsApp e Instagram às vezes reenviam o mesmo aviso — agora o bot não responde duas vezes pra mesma mensagem.</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr class="div">
+
+    <!-- MAPA DO ZIP -->
+    <section id="mapa">
+      <div class="section-label">02 · O QUE TEM DENTRO DO ZIP</div>
+      <h2>Mapa dos arquivos, em português simples</h2>
+      <div class="filemap">
+        <div class="file-row"><span class="path">prisma/</span><span class="desc">a "receita" do banco de dados — onde ficam os pacotes, preços e horários</span></div>
+        <div class="file-row"><span class="path">src/server.ts</span><span class="desc">liga tudo, é o ponto de partida do backend</span></div>
+        <div class="file-row"><span class="path">src/routes/</span><span class="desc">recebe as mensagens do WhatsApp e do Instagram</span></div>
+        <div class="file-row"><span class="path">src/services/ia.ts</span><span class="desc">conversa com a Claude e monta a resposta</span></div>
+        <div class="file-row"><span class="path">src/services/baseDeConhecimento.ts</span><span class="desc">busca os dados da clínica no banco</span></div>
+        <div class="file-row"><span class="path">.env.example</span><span class="desc">onde colam as chaves/senhas (copiar pra <code>.env</code>)</span></div>
+        <div class="file-row"><span class="path">docker-compose.yml</span><span class="desc">sobe tudo de uma vez (WhatsApp + backend)</span></div>
+      </div>
+    </section>
+
+    <hr class="div">
+
+    <!-- PASSO A PASSO -->
+    <section id="passo-a-passo">
+      <div class="section-label">03 · PASSO A PASSO</div>
+      <h2>Do zip até o cliente testando</h2>
+
+      <div class="timeline">
+
+        <div class="step">
+          <div class="step-marker">1</div>
+          <div class="step-card">
+            <h3>Preparar as chaves</h3>
+            <p class="sub">Duplica o arquivo de exemplo e preenche</p>
+            <pre><code>cp .env.example .env</code></pre>
+            <p>Abre o <code>.env</code> e preenche: chave da Anthropic (console.anthropic.com), uma chave qualquer pra <code>EVOLUTION_API_KEY</code> (só precisa ser igual nos dois lugares), e o número humano de backup.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-marker">2</div>
+          <div class="step-card">
+            <h3>Instalar e criar o banco</h3>
+            <p class="sub">Roda numa máquina com internet normal</p>
+            <pre><code>npm install
+npm run migrate
+npm run seed</code></pre>
+            <p>O <code>npm install</code> já baixa e prepara o Prisma sozinho. Se aparecer erro de rede aqui, é ambiente restrito (sandbox/firewall corporativo) — num PC normal isso roda liso.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-marker">3</div>
+          <div class="step-card">
+            <h3>Preencher os dados reais</h3>
+            <p class="sub">A parte que qualquer um da equipe consegue fazer</p>
+            <pre><code>npm run studio</code></pre>
+            <p>Abre uma telinha no navegador. Edita <b>ClinicaConfig</b> (nome, endereço, horário, pagamento, cancelamento) e adiciona um <b>Pacote</b> pra cada serviço real da clínica. É só isso que muda quando o cliente pedir ajuste de preço depois.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-marker">4</div>
+          <div class="step-card">
+            <h3>Subir tudo com Docker</h3>
+            <p class="sub">WhatsApp + backend juntos</p>
+            <pre><code>docker compose up -d --build
+docker compose exec backend npm run migrate:deploy
+docker compose exec backend npm run seed</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-marker">5</div>
+          <div class="step-card">
+            <h3>Conectar o WhatsApp</h3>
+            <p class="sub">Com um número de teste primeiro, nunca o da clínica ainda</p>
+            <pre><code>curl -X POST http://localhost:8080/instance/create \
+  -H "apikey: SUA_CHAVE" \
+  -d '{"instanceName":"clinica","qrcode":true}'</code></pre>
+            <p>Escaneia o QR code (Aparelhos conectados → Conectar um aparelho) e configura o webhook apontando pro backend — os comandos completos estão no README.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-marker">6</div>
+          <div class="step-card">
+            <h3>Conectar o Instagram</h3>
+            <p class="sub">Só precisa da conta da clínica como "tester"</p>
+            <ul>
+              <li>Conta Business/Creator vinculada a uma Página do Facebook.</li>
+              <li>App criado em developers.facebook.com com o produto de Instagram.</li>
+              <li>Clínica adicionada como testadora — sem precisar da revisão completa da Meta.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-marker">7</div>
+          <div class="step-card">
+            <h3>Testar antes de entregar</h3>
+            <p class="sub">Checklist final</p>
+            <ul class="checklist">
+              <li>Perguntou os pacotes/valores reais e bateu com o que está no Prisma Studio?</li>
+              <li>Mandou uma pergunta fora do escopo (ex: reclamação) e o bot encaminhou pro humano?</li>
+              <li>Testou pelo WhatsApp <b>e</b> pelo Instagram?</li>
+              <li>Avisou o cliente do custo mensal (VPS + IA)?</li>
+              <li>Combinou quem cuida da manutenção se algo travar?</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <hr class="div">
+
+    <div class="callout warn">
+      <h4>Nota honesta</h4>
+      <p>Eu revisei e testei o máximo que deu no meu ambiente aqui, mas o sandbox onde eu rodo bloqueia o domínio que o Prisma usa pra baixar o motor dele — então o <code>npm install</code> completo só valida de verdade na máquina de vocês, com internet normal. O resto (estrutura, rotas, lógica) foi checado com <code>tsc</code> e revisão linha a linha.</p>
+    </div>
+
+    <div class="closing">
+      <h3>Próximo passo</h3>
+      <p>Assim que tiverem os dados reais da clínica (pacotes, valores, horários), joguem no Prisma Studio e testem uma rodada de perguntas difíceis antes de conectar o número de verdade.</p>
+    </div>
+
+  </div>
+</body>
+</html>

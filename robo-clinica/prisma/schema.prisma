@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Dados fixos da clínica — sempre um registro só (id 1).
+model ClinicaConfig {
+  id           Int      @id @default(1)
+  nome         String
+  endereco     String
+  horario      String
+  pagamento    String
+  cancelamento String
+  atualizadoEm DateTime @updatedAt
+}
+
+// Lista de pacotes/serviços — pode ter quantos precisar.
+model Pacote {
+  id        Int    @id @default(autoincrement())
+  nome      String
+  valor     String
+  descricao String
+}
